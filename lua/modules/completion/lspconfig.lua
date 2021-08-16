@@ -10,10 +10,6 @@ if not packer_plugins['nvim-lspinstall'].loaded then
     vim.cmd [[packadd nvim-lspinstall]]
 end
 
-if not packer_plugins['lsp_signature.nvim'].loaded then
-    vim.cmd [[packadd lsp_signature.nvim]]
-end
-
 local nvim_lsp = require('lspconfig')
 local lsp_install = require('lspinstall')
 local saga = require('lspsaga')
@@ -30,20 +26,7 @@ local function setup_servers()
     lsp_install.setup()
     local servers = lsp_install.installed_servers()
     for _, lsp in ipairs(servers) do
-        nvim_lsp[lsp].setup {
-            capabilities = capabilities,
-            on_attach = function()
-                require('lsp_signature').on_attach({
-                    bind = true,
-                    use_lspsaga = false,
-                    floating_window = true,
-                    fix_pos = true,
-                    hint_enable = true,
-                    hi_parameter = "Search",
-                    handler_opts = {"double"}
-                })
-            end
-        }
+        nvim_lsp[lsp].setup {capabilities = capabilities}
     end
 end
 
